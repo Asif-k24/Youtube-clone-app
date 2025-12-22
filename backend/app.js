@@ -1,4 +1,5 @@
 import express from "express";
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -6,13 +7,14 @@ import cors from "cors";
 import userRouter from "./routes/user.route.js";
 import videosRouter from "./routes/video.route.js";
 
-
+dotenv.config();
 const app = express();
+const BASE_URL = process.env.API
 
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://192.168.56.101:5173"],
+    origin: ["http://localhost:5173", BASE_URL],
     credentials: true,
   })
 );
