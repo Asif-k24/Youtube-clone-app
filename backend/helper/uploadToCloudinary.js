@@ -5,12 +5,12 @@ import cloudinary from "../config/cloudinary.js";
 const uploadToCloudinary = async (filePath, options = {}) => {
   try {
     // Check if Cloudinary is configured (not using demo credentials)
-    const isDemoMode = !process.env.CLOUDINARY_CLOUD_NAME || 
-                      !process.env.CLOUDINARY_API_KEY || 
+    const isDemoMode = !process.env.CLOUDINARY_CLOUD_NAME ||
+                      !process.env.CLOUDINARY_API_KEY ||
                       !process.env.CLOUDINARY_API_SECRET ||
                       process.env.CLOUDINARY_CLOUD_NAME === 'demo' ||
                       process.env.CLOUDINARY_API_KEY === 'demo_key';
-    
+
     if (isDemoMode) {
       console.warn('Cloudinary is in demo mode - skipping actual upload');
       // Return a mock response for demo mode
@@ -32,12 +32,12 @@ const uploadToCloudinary = async (filePath, options = {}) => {
       }
     }
 
-    console.log('Uploading to Cloudinary:', { 
-      filePath, 
+    console.log('Uploading to Cloudinary:', {
+      filePath,
       resource_type: options.resource_type,
-      folder: options.folder 
+      folder: options.folder
     });
-    
+
     const result = await cloudinary.uploader.upload(filePath, options);
     console.log('Cloudinary upload successful:', result.secure_url);
     return result;
