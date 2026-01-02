@@ -2,7 +2,8 @@
 import axios from "axios";
 
 // Use environment variable with fallback
-const BASE_URL = import.meta.env.VITE_API_BASE_URL + "/users" || "http://localhost:5004/api/users";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5004/api";
+const BASE_URL = `${API_BASE}/users`;
 const api = axios.create({ baseURL: BASE_URL, withCredentials: true });
 
 export const signupUser = (formData) =>
