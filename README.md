@@ -2,6 +2,8 @@
 
 A full-featured MERN stack video streaming application built with Tailwind CSS and Redux Toolkit.
 
+![Uploading Architecture_flow_diagram.png…]()
+
 ## Features
 - User authentication
 - Video upload & streaming
@@ -35,3 +37,4 @@ A full-featured MERN stack video streaming application built with Tailwind CSS a
 - backup-backend.sh
 - backup-mongodb.sh
 - migrate-mongodb.sh
+
