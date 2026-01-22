@@ -1,0 +1,68 @@
+services:
+  mongodb:
+    image: mongo:6
+    container_name: youtube-clone-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongodb/init.js:/docker-entrypoint-initdb.d/init.js:ro
+    networks:
+      - youtube-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  backend:
+    build: ./backend
+    container_name: youtube-clone-backend
+    restart: always
+    ports:
+      - "5004:5004"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - CLIENT_URL=${CLIENT_URL}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./backend/uploads:/usr/src/app/uploads
+      - ./backend/public/temp:/usr/src/app/public/temp
+      - /usr/src/app/node_modules
+    networks:
+      - youtube-network
+
+  frontend:
+    build: ./client
+    container_name: youtube-clone-frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
+      - VITE_API_BASE_URL=${VITE_API_URL}
+      - VITE_APP_NAME=${VITE_APP_NAME}
+    depends_on:
+      - backend
+    networks:
+      - youtube-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  youtube-network:
+    driver: bridge
