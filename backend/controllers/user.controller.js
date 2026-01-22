@@ -5,7 +5,12 @@ import uploadToCloudinary from "../helper/uploadToCloudinary.js";
 import Video from "../models/video.model.js";
 import deleteFromCloudinary from "../helper/deleteFromCloudinary.js";
 
-
+const cookieOptions = {
+  httpOnly: true,
+  secure: false,          // IMPORTANT for http + NodePort
+  sameSite: "lax",        // FIX
+  path: "/",
+};
 
 // Signup Controller
 export const signup = async (req, res) => {
@@ -45,7 +50,6 @@ export const signup = async (req, res) => {
       password: hashedPassword,
       gender,
       profileImage,
-   
     });
 
     await newUser.save();
@@ -57,9 +61,7 @@ export const signup = async (req, res) => {
 
     // Set token in HTTP-only cookie
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-      sameSite: "strict",
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -117,9 +119,7 @@ export const login = async (req, res) => {
 
     // Set token in HTTP-only cookie
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      ...cookieOptions,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -141,11 +141,7 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   try {
     // Clear the token cookie
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
+    res.clearCookie("token", cookieOptions);
 
     res.status(200).json({
       success: true,
@@ -386,11 +382,7 @@ export const deleteUser = async (req, res) => {
     await User.findByIdAndDelete(id);
 
     // Clear JWT cookie
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
+    res.clearCookie("token", cookieOptions);
 
     res
       .status(200)
