@@ -11,6 +11,8 @@ dotenv.config({ silent: true });
 const app = express();
 
 const allowedOrigins = [
+  "http://youtube.local",
+  "http://youtube.local:32301",
   "http://localhost:5173",
   "http://127.0.0.1:5173"
 ];
