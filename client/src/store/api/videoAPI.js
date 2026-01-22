@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Use environment variable with fallback
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5004/api";
+const API_BASE = import.meta.env.VITE_API_URL || "/api";
 const BASE_URL = `${API_BASE}/videos`;
 
 const axiosConfig = {
