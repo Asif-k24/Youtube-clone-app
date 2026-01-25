@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: # backend-config or according to app
+  namespace: # keep name related to app
+data:
+  NODE_ENV: # keep your env eg: production, development, etc
+  CLIENT_URL: # keep your client url 
+  CLOUDINARY_CLOUD_NAME: # keep your cloudinary cloud name
+  MONGODB_URI: # keep your mongodb url

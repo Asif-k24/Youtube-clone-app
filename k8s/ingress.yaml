@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: youtube-ingress
+  namespace: youtube
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: youtube.local
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: youtube-backend
+                port:
+                  number: 5004
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: youtube-frontend
+                port:
+                  number: 80

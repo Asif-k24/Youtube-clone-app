@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: youtube
+data:
+  VITE_API_URL: # keep your viteapp url
+  VITE_APP_NAME: # keep your app name
