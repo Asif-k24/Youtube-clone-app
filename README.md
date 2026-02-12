@@ -36,4 +36,5 @@ A full-featured MERN stack video streaming application built with Tailwind CSS a
 - backup-mongodb.sh
 - migrate-mongodb.sh
 
-
+### Architecture Flow Diagram
+https://github.com/Asif-k24/Youtube-clone-app/blob/staging/Architecture_flow_diagram.png?raw=true
